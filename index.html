@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Advanced ToDo App</title>
 <style>
-/* ---- General Body ---- */
+/* --- Base --- */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
@@ -14,24 +14,24 @@ body {
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  background: linear-gradient(135deg,#a8edea,#fed6e3);
-  transition: background 0.3s;
+  background: linear-gradient(135deg, #f9f9f9, #e0f7fa);
+  transition: background 0.3s, color 0.3s;
 }
 
 body.dark {
   background: #121212;
-  color: #fff;
+  color: #eee;
 }
 
-/* ---- Container ---- */
+/* --- Container --- */
 .container {
   background: #ffffffdd;
-  padding: 25px 30px;
-  margin-top: 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  width: 360px;
-  max-width: 90%;
+  padding: 30px 25px;
+  margin-top: 40px;
+  border-radius: 18px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+  width: 380px;
+  max-width: 95%;
   text-align: center;
   transition: background 0.3s;
 }
@@ -40,18 +40,32 @@ body.dark .container {
   background: #1e1e1e;
 }
 
-/* ---- Headings ---- */
+/* --- Headings --- */
 h1 {
-  margin-bottom: 15px;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-/* ---- Input Fields ---- */
+body.dark h1 {
+  color: #fff;
+}
+
+/* --- Inputs & Selects --- */
 input, select {
-  padding: 8px 10px;
-  border-radius: 7px;
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  margin-bottom: 10px;
   outline: none;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0,123,255,0.3);
 }
 
 body.dark input, body.dark select {
@@ -64,48 +78,35 @@ input::placeholder {
   color: #aaa;
 }
 
-/* ---- Buttons ---- */
+/* --- Buttons --- */
 button {
-  padding: 8px 12px;
+  padding: 10px 15px;
   border: none;
-  border-radius: 7px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  margin-left: 5px;
-  transition: all 0.2s ease;
+  margin: 5px 2px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-#add-btn {
-  background: #28a745;
-  color: white;
-}
+#add-btn { background: #28a745; color: white; }
+#add-btn:hover { background: #218838; transform: translateY(-2px); }
 
-#add-btn:hover { background: #218838; }
+#clear-btn { background: #007bff; color: white; width: 100%; margin-top: 15px; }
+#clear-btn:hover { background: #0069d9; transform: translateY(-2px); }
 
-#clear-btn {
-  background: #007bff;
-  color: white;
-  width: 100%;
-  margin-top: 15px;
-}
+#dark-toggle { background: #6c757d; color: white; }
+#dark-toggle:hover { background: #5a6268; transform: translateY(-2px); }
 
-#clear-btn:hover { background: #0069d9; }
-
-#dark-toggle {
-  background: #6c757d;
-  color: white;
-  margin-top: 10px;
-}
-
-#dark-toggle:hover { background: #5a6268; }
-
-/* ---- Filters & Search ---- */
+/* --- Filters & Search --- */
 .filters, #search {
-  margin: 10px 0;
-  padding: 7px 10px;
-  border-radius: 7px;
-  border: 1px solid #ccc;
   width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  font-size: 14px;
 }
 
 body.dark .filters, body.dark #search {
@@ -114,11 +115,11 @@ body.dark .filters, body.dark #search {
   border: 1px solid #555;
 }
 
-/* ---- Task List ---- */
+/* --- Todo List --- */
 ul {
   list-style: none;
   padding: 0;
-  margin-top: 10px;
+  margin-top: 15px;
   max-height: 300px;
   overflow-y: auto;
 }
@@ -127,15 +128,19 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 10px;
-  margin-bottom: 8px;
-  border-radius: 7px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
   font-size: 14px;
+  background: #fafafa;
 }
 
-li:hover { background: #f1f1f1; }
+li:hover {
+  background: #f0f0f0;
+  transform: translateX(3px);
+}
 
 body.dark li:hover { background: #2c2c2c; }
 
@@ -150,28 +155,31 @@ body.dark li.completed { background: #333; color: #aaa; }
 li button {
   background: #dc3545;
   color: white;
-  padding: 4px 7px;
+  padding: 5px 8px;
   font-size: 12px;
+  border-radius: 6px;
+  margin-left: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-li button:hover { background: #c82333; }
+li button:hover { background: #c82333; transform: translateY(-1px); }
 
-/* ---- Progress Bar ---- */
+/* --- Progress Bar --- */
 .progress-container {
-  margin-top: 10px;
+  margin-top: 15px;
   background: #eee;
-  border-radius: 10px;
-  height: 12px;
+  border-radius: 12px;
+  height: 14px;
   width: 100%;
   overflow: hidden;
 }
 
 .progress-bar {
-  height: 12px;
+  height: 14px;
   background: #28a745;
   width: 0%;
-  transition: width 0.3s;
-  border-radius: 10px;
+  transition: width 0.4s ease;
+  border-radius: 12px;
 }
 </style>
 </head>
@@ -180,7 +188,6 @@ li button:hover { background: #c82333; }
 <div class="container">
   <h1>Advanced ToDo App</h1>
 
-  <!-- Input -->
   <input type="text" id="todo-input" placeholder="Add a new task">
   <select id="priority">
     <option value="Low">Low Priority</option>
@@ -188,9 +195,8 @@ li button:hover { background: #c82333; }
     <option value="High">High Priority</option>
   </select>
   <input type="date" id="due-date">
-  <button id="add-btn">Add</button>
+  <button id="add-btn">Add Task</button>
 
-  <!-- Search & Filter -->
   <input type="text" id="search" placeholder="Search tasks...">
   <select class="filters" id="filter">
     <option value="all">All Tasks</option>
@@ -198,21 +204,17 @@ li button:hover { background: #c82333; }
     <option value="pending">Pending</option>
   </select>
 
-  <!-- Task List -->
   <ul id="todo-list"></ul>
 
-  <!-- Progress -->
   <div class="progress-container">
     <div class="progress-bar" id="progress-bar"></div>
   </div>
 
-  <!-- Buttons -->
-  <button id="clear-btn">Clear All</button>
+  <button id="clear-btn">Clear All Tasks</button>
   <button id="dark-toggle">Toggle Dark Mode</button>
 </div>
 
 <script>
-// DOM Elements
 const input = document.getElementById("todo-input");
 const addBtn = document.getElementById("add-btn");
 const todoList = document.getElementById("todo-list");
@@ -224,18 +226,20 @@ const prioritySelect = document.getElementById("priority");
 const dueDateInput = document.getElementById("due-date");
 const progressBar = document.getElementById("progress-bar");
 
-// Load todos from localStorage
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
 let darkMode = localStorage.getItem("darkMode") === "true";
 
-// Dark Mode
 function updateDarkMode() {
   if(darkMode) document.body.classList.add("dark");
   else document.body.classList.remove("dark");
 }
 updateDarkMode();
 
-// Render Todos
+function saveTodos() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+  localStorage.setItem("darkMode", darkMode);
+}
+
 function renderTodos() {
   todoList.innerHTML = "";
   let filteredTodos = todos;
@@ -254,17 +258,15 @@ function renderTodos() {
     li.innerHTML = `<span>${todo.text} (${todo.priority}) - ${todo.dueDate || "No date"})</span>`;
     if(todo.completed) li.classList.add("completed");
 
-    // Toggle complete
     li.onclick = () => {
       todos[index].completed = !todos[index].completed;
       saveTodos();
       renderTodos();
     };
 
-    // Edit task
     const editBtn = document.createElement("button");
     editBtn.textContent = "Edit";
-    editBtn.onclick = (e) => {
+    editBtn.onclick = e => {
       e.stopPropagation();
       const newText = prompt("Edit task:", todo.text);
       if(newText) todos[index].text = newText;
@@ -272,10 +274,9 @@ function renderTodos() {
       renderTodos();
     };
 
-    // Delete button
     const delBtn = document.createElement("button");
     delBtn.textContent = "Delete";
-    delBtn.onclick = (e) => {
+    delBtn.onclick = e => {
       e.stopPropagation();
       todos.splice(index,1);
       saveTodos();
@@ -285,10 +286,10 @@ function renderTodos() {
     li.appendChild(editBtn);
     li.appendChild(delBtn);
 
-    // Highlight priority color
-    if(todo.priority === "High") li.style.borderLeft = "5px solid red";
-    else if(todo.priority === "Medium") li.style.borderLeft = "5px solid orange";
-    else li.style.borderLeft = "5px solid green";
+    // Priority border
+    if(todo.priority === "High") li.style.borderLeft = "5px solid #ff4d4d";
+    else if(todo.priority === "Medium") li.style.borderLeft = "5px solid #ffa500";
+    else li.style.borderLeft = "5px solid #28a745";
 
     todoList.appendChild(li);
   });
@@ -296,20 +297,13 @@ function renderTodos() {
   updateProgress();
 }
 
-// Progress bar
 function updateProgress() {
   const completed = todos.filter(t => t.completed).length;
   const percent = todos.length ? (completed / todos.length) * 100 : 0;
   progressBar.style.width = percent + "%";
 }
 
-// Save to localStorage
-function saveTodos() {
-  localStorage.setItem("todos", JSON.stringify(todos));
-  localStorage.setItem("darkMode", darkMode);
-}
-
-// Add Task
+// Add task
 addBtn.addEventListener("click", () => {
   const text = input.value.trim();
   const priority = prioritySelect.value;
@@ -322,10 +316,9 @@ addBtn.addEventListener("click", () => {
   dueDateInput.value = "";
 });
 
-// Add task with Enter key
 input.addEventListener("keypress", e => { if(e.key==="Enter") addBtn.click(); });
 
-// Clear All
+// Clear all
 clearBtn.addEventListener("click", () => {
   if(confirm("Clear all tasks?")) {
     todos = [];
@@ -334,19 +327,19 @@ clearBtn.addEventListener("click", () => {
   }
 });
 
-// Dark mode toggle
+// Dark mode
 darkToggle.addEventListener("click", () => {
   darkMode = !darkMode;
   updateDarkMode();
   saveTodos();
 });
 
-// Filter & Search events
+// Filters & Search
 filter.addEventListener("change", renderTodos);
 searchInput.addEventListener("input", renderTodos);
 
-// Initial render
 renderTodos();
 </script>
+
 </body>
 </html>
