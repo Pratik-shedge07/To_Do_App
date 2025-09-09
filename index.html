@@ -1,210 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ToDo App</title>
-  <style>
-    /* General body styling */
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #a8edea, #fed6e3);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced ToDo App</title>
+<style>
+/* ---- General Body ---- */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: linear-gradient(135deg,#a8edea,#fed6e3);
+  transition: background 0.3s;
+}
 
-    /* Container card */
-    .container {
-      background: #ffffffdd;
-      padding: 30px 35px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      width: 350px;
-      max-width: 90%;
-      text-align: center;
-    }
+body.dark {
+  background: #121212;
+  color: #fff;
+}
 
-    h1 {
-      margin-bottom: 20px;
-      color: #333;
-    }
+/* ---- Container ---- */
+.container {
+  background: #ffffffdd;
+  padding: 25px 30px;
+  margin-top: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  width: 360px;
+  max-width: 90%;
+  text-align: center;
+  transition: background 0.3s;
+}
 
-    /* Input field and buttons */
-    input {
-      width: 70%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      outline: none;
-      font-size: 15px;
-    }
+body.dark .container {
+  background: #1e1e1e;
+}
 
-    input::placeholder {
-      color: #aaa;
-    }
+/* ---- Headings ---- */
+h1 {
+  margin-bottom: 15px;
+}
 
-    button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
-      transition: all 0.2s ease;
-    }
+/* ---- Input Fields ---- */
+input, select {
+  padding: 8px 10px;
+  border-radius: 7px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  outline: none;
+}
 
-    #add-btn {
-      background: #28a745;
-      color: white;
-      margin-left: 5px;
-    }
+body.dark input, body.dark select {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
 
-    #add-btn:hover {
-      background: #218838;
-    }
+input::placeholder {
+  color: #aaa;
+}
 
-    #clear-btn {
-      background: #007bff;
-      color: white;
-      margin-top: 15px;
-      width: 100%;
-    }
+/* ---- Buttons ---- */
+button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 5px;
+  transition: all 0.2s ease;
+}
 
-    #clear-btn:hover {
-      background: #0069d9;
-    }
+#add-btn {
+  background: #28a745;
+  color: white;
+}
 
-    /* ToDo list styling */
-    ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 20px;
-      max-height: 300px;
-      overflow-y: auto;
-    }
+#add-btn:hover { background: #218838; }
 
-    li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 12px;
-      margin-bottom: 8px;
-      background: #f9f9f9;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
+#clear-btn {
+  background: #007bff;
+  color: white;
+  width: 100%;
+  margin-top: 15px;
+}
 
-    li:hover {
-      background: #f1f1f1;
-    }
+#clear-btn:hover { background: #0069d9; }
 
-    li.completed {
-      text-decoration: line-through;
-      color: #888;
-      background: #e0e0e0;
-    }
+#dark-toggle {
+  background: #6c757d;
+  color: white;
+  margin-top: 10px;
+}
 
-    li button {
-      background: #dc3545;
-      color: white;
-      padding: 5px 8px;
-      border-radius: 5px;
-      font-size: 13px;
-    }
+#dark-toggle:hover { background: #5a6268; }
 
-    li button:hover {
-      background: #c82333;
-    }
+/* ---- Filters & Search ---- */
+.filters, #search {
+  margin: 10px 0;
+  padding: 7px 10px;
+  border-radius: 7px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
 
-    /* Scrollbar styling */
-    ul::-webkit-scrollbar {
-      width: 6px;
-    }
+body.dark .filters, body.dark #search {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
 
-    ul::-webkit-scrollbar-thumb {
-      background: #ccc;
-      border-radius: 3px;
-    }
+/* ---- Task List ---- */
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
 
-  </style>
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-size: 14px;
+}
+
+li:hover { background: #f1f1f1; }
+
+body.dark li:hover { background: #2c2c2c; }
+
+li.completed {
+  text-decoration: line-through;
+  color: #888;
+  background: #e0e0e0;
+}
+
+body.dark li.completed { background: #333; color: #aaa; }
+
+li button {
+  background: #dc3545;
+  color: white;
+  padding: 4px 7px;
+  font-size: 12px;
+}
+
+li button:hover { background: #c82333; }
+
+/* ---- Progress Bar ---- */
+.progress-container {
+  margin-top: 10px;
+  background: #eee;
+  border-radius: 10px;
+  height: 12px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 12px;
+  background: #28a745;
+  width: 0%;
+  transition: width 0.3s;
+  border-radius: 10px;
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>My ToDo List</h1>
-    <input type="text" id="todo-input" placeholder="Add a new task">
-    <button id="add-btn">Add</button>
-    <ul id="todo-list"></ul>
-    <button id="clear-btn">Clear All</button>
+
+<div class="container">
+  <h1>Advanced ToDo App</h1>
+
+  <!-- Input -->
+  <input type="text" id="todo-input" placeholder="Add a new task">
+  <select id="priority">
+    <option value="Low">Low Priority</option>
+    <option value="Medium">Medium Priority</option>
+    <option value="High">High Priority</option>
+  </select>
+  <input type="date" id="due-date">
+  <button id="add-btn">Add</button>
+
+  <!-- Search & Filter -->
+  <input type="text" id="search" placeholder="Search tasks...">
+  <select class="filters" id="filter">
+    <option value="all">All Tasks</option>
+    <option value="completed">Completed</option>
+    <option value="pending">Pending</option>
+  </select>
+
+  <!-- Task List -->
+  <ul id="todo-list"></ul>
+
+  <!-- Progress -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
   </div>
 
-  <script>
-    const input = document.getElementById("todo-input");
-    const addBtn = document.getElementById("add-btn");
-    const todoList = document.getElementById("todo-list");
-    const clearBtn = document.getElementById("clear-btn");
+  <!-- Buttons -->
+  <button id="clear-btn">Clear All</button>
+  <button id="dark-toggle">Toggle Dark Mode</button>
+</div>
 
-    // Load todos from localStorage
-    let todos = JSON.parse(localStorage.getItem("todos")) || [];
+<script>
+// DOM Elements
+const input = document.getElementById("todo-input");
+const addBtn = document.getElementById("add-btn");
+const todoList = document.getElementById("todo-list");
+const clearBtn = document.getElementById("clear-btn");
+const darkToggle = document.getElementById("dark-toggle");
+const filter = document.getElementById("filter");
+const searchInput = document.getElementById("search");
+const prioritySelect = document.getElementById("priority");
+const dueDateInput = document.getElementById("due-date");
+const progressBar = document.getElementById("progress-bar");
 
-    function renderTodos() {
-      todoList.innerHTML = "";
-      todos.forEach((todo, index) => {
-        const li = document.createElement("li");
-        li.textContent = todo.text;
-        if(todo.completed) li.classList.add("completed");
+// Load todos from localStorage
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
+let darkMode = localStorage.getItem("darkMode") === "true";
 
-        // Toggle complete on click
-        li.onclick = () => {
-          todos[index].completed = !todos[index].completed;
-          localStorage.setItem("todos", JSON.stringify(todos));
-          renderTodos();
-        };
+// Dark Mode
+function updateDarkMode() {
+  if(darkMode) document.body.classList.add("dark");
+  else document.body.classList.remove("dark");
+}
+updateDarkMode();
 
-        // Delete button
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "Delete";
-        deleteBtn.onclick = (e) => {
-          e.stopPropagation(); // prevent toggle
-          todos.splice(index, 1);
-          localStorage.setItem("todos", JSON.stringify(todos));
-          renderTodos();
-        };
+// Render Todos
+function renderTodos() {
+  todoList.innerHTML = "";
+  let filteredTodos = todos;
 
-        li.appendChild(deleteBtn);
-        todoList.appendChild(li);
-      });
-    }
+  // Filter
+  const filterVal = filter.value;
+  if(filterVal === "completed") filteredTodos = todos.filter(t => t.completed);
+  if(filterVal === "pending") filteredTodos = todos.filter(t => !t.completed);
 
-    addBtn.addEventListener("click", () => {
-      const text = input.value.trim();
-      if(text) {
-        todos.push({ text: text, completed: false });
-        localStorage.setItem("todos", JSON.stringify(todos));
-        renderTodos();
-        input.value = "";
-      } else {
-        alert("Please enter a task!");
-      }
-    });
+  // Search
+  const searchVal = searchInput.value.toLowerCase();
+  filteredTodos = filteredTodos.filter(t => t.text.toLowerCase().includes(searchVal));
 
-    // Add task on Enter key
-    input.addEventListener("keypress", (e) => {
-      if(e.key === "Enter") addBtn.click();
-    });
+  filteredTodos.forEach((todo, index) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<span>${todo.text} (${todo.priority}) - ${todo.dueDate || "No date"})</span>`;
+    if(todo.completed) li.classList.add("completed");
 
-    clearBtn.addEventListener("click", () => {
-      if(confirm("Are you sure you want to clear all tasks?")) {
-        todos = [];
-        localStorage.setItem("todos", JSON.stringify(todos));
-        renderTodos();
-      }
-    });
+    // Toggle complete
+    li.onclick = () => {
+      todos[index].completed = !todos[index].completed;
+      saveTodos();
+      renderTodos();
+    };
 
-    // Render on page load
+    // Edit task
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.onclick = (e) => {
+      e.stopPropagation();
+      const newText = prompt("Edit task:", todo.text);
+      if(newText) todos[index].text = newText;
+      saveTodos();
+      renderTodos();
+    };
+
+    // Delete button
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "Delete";
+    delBtn.onclick = (e) => {
+      e.stopPropagation();
+      todos.splice(index,1);
+      saveTodos();
+      renderTodos();
+    };
+
+    li.appendChild(editBtn);
+    li.appendChild(delBtn);
+
+    // Highlight priority color
+    if(todo.priority === "High") li.style.borderLeft = "5px solid red";
+    else if(todo.priority === "Medium") li.style.borderLeft = "5px solid orange";
+    else li.style.borderLeft = "5px solid green";
+
+    todoList.appendChild(li);
+  });
+
+  updateProgress();
+}
+
+// Progress bar
+function updateProgress() {
+  const completed = todos.filter(t => t.completed).length;
+  const percent = todos.length ? (completed / todos.length) * 100 : 0;
+  progressBar.style.width = percent + "%";
+}
+
+// Save to localStorage
+function saveTodos() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+  localStorage.setItem("darkMode", darkMode);
+}
+
+// Add Task
+addBtn.addEventListener("click", () => {
+  const text = input.value.trim();
+  const priority = prioritySelect.value;
+  const dueDate = dueDateInput.value;
+  if(!text) return alert("Please enter a task!");
+  todos.push({text, completed:false, priority, dueDate});
+  saveTodos();
+  renderTodos();
+  input.value = "";
+  dueDateInput.value = "";
+});
+
+// Add task with Enter key
+input.addEventListener("keypress", e => { if(e.key==="Enter") addBtn.click(); });
+
+// Clear All
+clearBtn.addEventListener("click", () => {
+  if(confirm("Clear all tasks?")) {
+    todos = [];
+    saveTodos();
     renderTodos();
-  </script>
+  }
+});
+
+// Dark mode toggle
+darkToggle.addEventListener("click", () => {
+  darkMode = !darkMode;
+  updateDarkMode();
+  saveTodos();
+});
+
+// Filter & Search events
+filter.addEventListener("change", renderTodos);
+searchInput.addEventListener("input", renderTodos);
+
+// Initial render
+renderTodos();
+</script>
 </body>
 </html>
