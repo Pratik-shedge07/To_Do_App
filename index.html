@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDo App</title>
+  <style>
+    /* General body styling */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #a8edea, #fed6e3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    /* Container card */
+    .container {
+      background: #ffffffdd;
+      padding: 30px 35px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      width: 350px;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    /* Input field and buttons */
+    input {
+      width: 70%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 15px;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: all 0.2s ease;
+    }
+
+    #add-btn {
+      background: #28a745;
+      color: white;
+      margin-left: 5px;
+    }
+
+    #add-btn:hover {
+      background: #218838;
+    }
+
+    #clear-btn {
+      background: #007bff;
+      color: white;
+      margin-top: 15px;
+      width: 100%;
+    }
+
+    #clear-btn:hover {
+      background: #0069d9;
+    }
+
+    /* ToDo list styling */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    li:hover {
+      background: #f1f1f1;
+    }
+
+    li.completed {
+      text-decoration: line-through;
+      color: #888;
+      background: #e0e0e0;
+    }
+
+    li button {
+      background: #dc3545;
+      color: white;
+      padding: 5px 8px;
+      border-radius: 5px;
+      font-size: 13px;
+    }
+
+    li button:hover {
+      background: #c82333;
+    }
+
+    /* Scrollbar styling */
+    ul::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ul::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 3px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>My ToDo List</h1>
+    <input type="text" id="todo-input" placeholder="Add a new task">
+    <button id="add-btn">Add</button>
+    <ul id="todo-list"></ul>
+    <button id="clear-btn">Clear All</button>
+  </div>
+
+  <script>
+    const input = document.getElementById("todo-input");
+    const addBtn = document.getElementById("add-btn");
+    const todoList = document.getElementById("todo-list");
+    const clearBtn = document.getElementById("clear-btn");
+
+    // Load todos from localStorage
+    let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+    function renderTodos() {
+      todoList.innerHTML = "";
+      todos.forEach((todo, index) => {
+        const li = document.createElement("li");
+        li.textContent = todo.text;
+        if(todo.completed) li.classList.add("completed");
+
+        // Toggle complete on click
+        li.onclick = () => {
+          todos[index].completed = !todos[index].completed;
+          localStorage.setItem("todos", JSON.stringify(todos));
+          renderTodos();
+        };
+
+        // Delete button
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.onclick = (e) => {
+          e.stopPropagation(); // prevent toggle
+          todos.splice(index, 1);
+          localStorage.setItem("todos", JSON.stringify(todos));
+          renderTodos();
+        };
+
+        li.appendChild(deleteBtn);
+        todoList.appendChild(li);
+      });
+    }
+
+    addBtn.addEventListener("click", () => {
+      const text = input.value.trim();
+      if(text) {
+        todos.push({ text: text, completed: false });
+        localStorage.setItem("todos", JSON.stringify(todos));
+        renderTodos();
+        input.value = "";
+      } else {
+        alert("Please enter a task!");
+      }
+    });
+
+    // Add task on Enter key
+    input.addEventListener("keypress", (e) => {
+      if(e.key === "Enter") addBtn.click();
+    });
+
+    clearBtn.addEventListener("click", () => {
+      if(confirm("Are you sure you want to clear all tasks?")) {
+        todos = [];
+        localStorage.setItem("todos", JSON.stringify(todos));
+        renderTodos();
+      }
+    });
+
+    // Render on page load
+    renderTodos();
+  </script>
+</body>
+</html>
